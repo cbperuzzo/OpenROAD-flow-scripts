@@ -66,7 +66,7 @@ if { [find_macros] != "" } {
     set all_args $::env(RTLMP_ARGS)
   }
 
-  log_cmd rtl_macro_placer {*}$all_args
+  log_cmd saplace_simulated_annealing {*}$all_args
 } else {
   puts "No macros found: Skipping macro_placement"
 }
