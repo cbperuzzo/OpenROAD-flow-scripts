@@ -38,35 +38,16 @@ if { [find_macros] != "" } {
     log_cmd source $::env(MACRO_PLACEMENT_TCL)
   }
 
-  set additional_rtlmp_args ""
-  append_env_var additional_rtlmp_args RTLMP_MAX_LEVEL -max_num_level 1
-  append_env_var additional_rtlmp_args RTLMP_MAX_INST -max_num_inst 1
-  append_env_var additional_rtlmp_args RTLMP_MIN_INST -min_num_inst 1
-  append_env_var additional_rtlmp_args RTLMP_MAX_MACRO -max_num_macro 1
-  append_env_var additional_rtlmp_args RTLMP_MIN_MACRO -min_num_macro 1
-  append additional_rtlmp_args " -halo_width $halo_x"
-  append additional_rtlmp_args " -halo_height $halo_y"
-  append_env_var additional_rtlmp_args RTLMP_MIN_AR -min_ar 1
-  append_env_var additional_rtlmp_args RTLMP_AREA_WT -area_weight 1
-  append_env_var additional_rtlmp_args RTLMP_WIRELENGTH_WT -wirelength_weight 1
-  append_env_var additional_rtlmp_args RTLMP_OUTLINE_WT -outline_weight 1
-  append_env_var additional_rtlmp_args RTLMP_BOUNDARY_WT -boundary_weight 1
-  append_env_var additional_rtlmp_args RTLMP_NOTCH_WT -notch_weight 1
-  append_env_var additional_rtlmp_args RTLMP_RPT_DIR -report_directory 1
-  append_env_var additional_rtlmp_args RTLMP_FENCE_LX -fence_lx 1
-  append_env_var additional_rtlmp_args RTLMP_FENCE_LY -fence_ly 1
-  append_env_var additional_rtlmp_args RTLMP_FENCE_UX -fence_ux 1
-  append_env_var additional_rtlmp_args RTLMP_FENCE_UY -fence_uy 1
-
-  append additional_rtlmp_args " -target_util [place_density_with_lb_addon]"
-
-  set all_args $additional_rtlmp_args
-
-  if { [env_var_exists_and_non_empty RTLMP_ARGS] } {
-    set all_args $::env(RTLMP_ARGS)
+  if { [env_var_exists_and_non_empty MACRO_PLACEMENT_TCL] } {
+    log_cmd source $::env(MACRO_PLACEMENT_TCL)
   }
 
+  # Define apenas as flags de halo aceitas pelo saplace_simulated_annealing
+  set all_args [list -halo_width $halo_x -halo_height $halo_y]
+
+  # Executa o comando apenas com os argumentos de halo necessários
   log_cmd saplace_simulated_annealing {*}$all_args
+
 } else {
   puts "No macros found: Skipping macro_placement"
 }
