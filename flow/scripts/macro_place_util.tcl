@@ -30,6 +30,9 @@ if { [find_macros] != "" } {
   set halo_max [expr max($halo_x, $halo_y)]
   set blockage_width $halo_max
 
+  set halo_x_dbu [ord::microns_to_dbu $halo_x]
+  set halo_y_dbu [ord::microns_to_dbu $halo_y]
+
   if { [env_var_exists_and_non_empty MACRO_BLOCKAGE_HALO] } {
     set blockage_width $::env(MACRO_BLOCKAGE_HALO)
   }
@@ -43,7 +46,7 @@ if { [find_macros] != "" } {
   }
 
   # Define apenas as flags de halo aceitas pelo saplace_simulated_annealing
-  set all_args [list -halo_width $halo_x -halo_height $halo_y]
+  set all_args [list -halo_width $halo_x_dbu -halo_height $halo_y_dbu]
 
   # Executa o comando apenas com os argumentos de halo necessários
   log_cmd saplace_simulated_annealing {*}$all_args
